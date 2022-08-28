@@ -1,0 +1,7 @@
+version: '3'
+
+services: 
+  portfolio-front-end:
+    container_name: portfolio-react
+    image: louisaldorio/portfolio-react
+    network_mode: global-network

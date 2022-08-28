@@ -1,0 +1,60 @@
+# stages:
+#   # - pre-build
+#   - build
+#   - deploy
+
+# variables:
+#   CONTAINER_NAME: portfolio-react
+#   TAG_LATEST: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
+#   TAG_PIPELINE_ID: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID
+#   APP_DOMAIN: portfolio.louisaldorio.site
+#   DOCKER_TLS_CERTDIR: ''
+
+# # pre-build:
+# #   stage: pre-build
+# #   image: node
+# #   cache:
+# #     paths:
+# #       - node_modules/
+# #   before_script: 
+# #     - npm install
+# #   script:
+# #     - npm run build
+# #   artifacts:
+# #     paths:
+# #     - build
+# #     - default.conf
+# #     expire_in: 1 week
+# #   only:
+# #     - master
+
+# build: 
+#   image: docker:stable-dind
+#   services:
+#     - docker:19.03.12-dind
+#   stage: build
+#   script:
+#     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+#     - docker build --build-arg VERSION=$CI_PIPELINE_ID -f Dockerfile -t $TAG_PIPELINE_ID -t $TAG_LATEST .
+#     - docker push $TAG_LATEST
+#     - docker push $TAG_PIPELINE_ID
+#   only:
+#     - master
+
+
+# deployment:
+#   image: alpine:latest
+#   stage: deploy
+#   script:
+#     - apk update && apk add openssh-client
+#     - apk add sshpass
+#     - sshpass -p "$SSH_KEY" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY"
+#     - sshpass -p "$SSH_KEY" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull $TAG_LATEST"
+#     - sshpass -p "$SSH_KEY" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f $CONTAINER_NAME || true"
+#     - sshpass -p "$SSH_KEY" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d --name $CONTAINER_NAME --net global-network $TAG_LATEST"
+#     - sshpass -p "$SSH_KEY" ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker image prune --force"
+#   environment:
+#     name: production
+#     url: https://$APP_DOMAIN
+#   only:
+#     - master

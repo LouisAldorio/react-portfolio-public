@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-size: large;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Nunito Regular'), local('Nunito-Regular'), 
+   url(https://fonts.gstatic.com/s/nunito/v11/XRXV3I6Li01BKofINeaBTMnFcQ.woff2) 
+   format('woff2');
+  
+}

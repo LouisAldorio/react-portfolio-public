@@ -1,0 +1,25 @@
+
+.left-box {
+    text-align: right;
+}
+
+.wrapper {
+    position: relative;
+    padding: 16px;
+}
+.content {
+    font-weight: 800;
+    text-align: center;
+    position: relative;
+    bottom: 50%;
+    line-height: 1.5;
+    z-index: 2;
+}
+.wrapper img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    opacity: 0.6;
+}
